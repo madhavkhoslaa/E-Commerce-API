@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
-
+const bcrypt = require('bcrypt')
 
 BuyerSchema = mongoose.Schema({
     name: {
@@ -26,6 +26,11 @@ BuyerSchema = mongoose.Schema({
     }
 })
 
+BuyerSchema.pre('save', async function(next) {
+    const user = this.user
+    if (user.isModified('password')) user.password = bcrypt.hashSync(user.password, 8)
+    next()
+})
 Buyer = mongoose.model('buyer', BuyerSchema)
 
 module.exports = Buyer
