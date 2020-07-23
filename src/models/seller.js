@@ -37,6 +37,13 @@ SellerSchema.virtual('product', {
     ref: 
 })*/
 
+SellerSchema.statics.findByCredentials = async function(email, password) {
+    const seller = await Seller.findOne({ email })
+    if (!seller) throw new Error('Unable to log in')
+    const isMatch = await bcrypt.compare(password, seller.password)
+    if (!isMatch) throw new Error('Unable to log in')
+    return user
+}
 SellerSchema.methods.toJSON = function() {
     const seller = this
     const sellerobj_ = seller.toObject()
