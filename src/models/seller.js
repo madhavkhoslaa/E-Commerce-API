@@ -12,6 +12,7 @@ const SellerSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
+        unique: true,
         validator(value) {
             if (!validator.isEmail(value)) throw new Error('not a valid email')
         }
