@@ -18,6 +18,7 @@ SellerRouter.post('/register/seller', async(req, res) => {
 SellerRouter.get('/seller/me', Auth, async(req, res) => {
     try {
         const seller = req.seller
+        if (!seller) return res.status(400).send("not found")
         res.send(seller)
     } catch (e) {
         res.status(500)
@@ -33,24 +34,42 @@ SellerRouter.patch('/seller/me', Auth, async(req, res) => {
         const seller = req.seller
         to_update.forEach(update => seller[update] = req.body[update])
         await seller.save()
-        if (!seller) return res.send("s")
+        if (!seller) return res.send({ message: "could not update" })
         res.status(200).send(seller)
     } catch (e) {
-        res.status(500)
+        res.status(500).send(e)
     }
 })
 
 SellerRouter.delete('/seller/me', Auth, async(req, res) => {
-    const seller = req.seller
-    seller.remove()
+    try {
+        const seller = await Seller.deleteOne({ _id: req.seller._id })
+        console.log(seller)
+        res.status(400).send({ message: "seller deleted", seller })
+    } catch (e) {
+        res.status(500).send({ message: "unable to delete" })
+    }
 })
 
 SellerRouter.post('/seller/login', async(req, res) => {
-    res.send("too")
+    try {
+        const seller = await Seller.findByCredentials(req.body.email, req.body.password)
+        const token = seller.getAuthtoken()
+        console.log(token)
+        res.status(200).send({ seller, token })
+    } catch (e) {
+        res.status(500).send({ message: "unable to login seller" })
+    }
 })
 
-SellerRouter.post('/seller/logout', async(req, res) => {
-    res.send("too")
+SellerRouter.post('/seller/logout', Auth, async(req, res) => {
+    try {
+        req.seller.tokens = req.seller.tokens.filter((token) => token.token != req.token)
+        await req.seller.save()
+        res.status(200).send({ message: "seller logged out" })
+    } catch (e) {
+        res.status(500).send("internal server error")
+    }
 })
 
 module.exports = SellerRouter
