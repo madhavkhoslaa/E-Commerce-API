@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
-
+const jwt = require('jsonwebtoken')
 
 const SellerSchema = mongoose.Schema({
     name: {
@@ -12,8 +12,10 @@ const SellerSchema = mongoose.Schema({
     email: {
         type: String,
         required: true,
+        lowercase: true,
         unique: true,
-        validator(value) {
+        trim: true,
+        validate(value) {
             if (!validator.isEmail(value)) throw new Error('not a valid email')
         }
     },
@@ -23,7 +25,7 @@ const SellerSchema = mongoose.Schema({
     },
     tokens: [{
         token: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             required: true
         }
     }]
@@ -37,15 +39,15 @@ SellerSchema.virtual('product', {
 
 SellerSchema.methods.toJSON = function() {
     const seller = this
-    const selerobj_ = seller.toObject()
-    delete selerobj_.password
-    delete selerobj_.tokens
-    return selerobj_
+    const sellerobj_ = seller.toObject()
+    delete sellerobj_.password
+    delete sellerobj_.tokens
+    return sellerobj_
 }
 
 SellerSchema.methods.getAuthtoken = async function() {
     const seller = this
-    const token = jwt.sign({ _id: seller._id.toString() }, "password")
+    const token = jwt.sign({ _id: seller._id.toString() }, "seller_password")
     seller.tokens = seller.tokens.concat({ token })
     try {
         await seller.save()
