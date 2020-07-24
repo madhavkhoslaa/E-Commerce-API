@@ -1,7 +1,7 @@
 const express = require('express')
 const Seller = require('../models/seller')
 const Auth = require('../middleware/Sellerauth')
-
+const Product = require('../models/product')
 const SellerRouter = express.Router()
 
 SellerRouter.post('/register/seller', async(req, res) => {
@@ -72,4 +72,36 @@ SellerRouter.post('/seller/logout', Auth, async(req, res) => {
     }
 })
 
+SellerRouter.post('/seller/product/add', Auth, async(req, res) => {
+    try {
+        //#TODO only saves the product details right now and not the seller
+        //Add owner in product schema
+        const product = new Product(req.body)
+        product.save()
+        res.status(200).send({ message: "product added" }, product)
+    } catch (e) {
+        res.status(500).send({ message: "could not add product" })
+    }
+})
+
+SellerRouter.post('/seller/product/edit/:id', Auth, async(req, res) => {
+    try {
+        const product = await Product.findById(req.params.id)
+        if (!product) return res.send({ message: "not found" })
+        res.send({ product })
+    } catch (e) {
+        res.send({ message: "not found" })
+    }
+})
+
+SellerRouter.post('/seller/product/delete/:id', Auth, async(req, res) => {
+    try {
+        const product = Product.deleteOne({ _id: req.params.id })
+        if (!product)
+    }
+})
+
+SellerRouter.get('/seller/products', Auth, async(req, res) => {
+    //need to add product virtial on seller for this method to be done
+})
 module.exports = SellerRouter
