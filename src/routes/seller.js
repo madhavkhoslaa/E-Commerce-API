@@ -4,7 +4,7 @@ const Auth = require('../middleware/Sellerauth')
 const Product = require('../models/product')
 const SellerRouter = express.Router()
 
-SellerRouter.post('/register/seller', async(req, res) => {
+SellerRouter.post('/seller/register', async(req, res) => {
     try {
         const seller = new Seller(req.body)
         const token = await seller.getAuthtoken()
@@ -21,7 +21,7 @@ SellerRouter.get('/seller/me', Auth, async(req, res) => {
         if (!seller) return res.status(400).send("not found")
         res.send(seller)
     } catch (e) {
-        res.status(500)
+        res.status(500).send()
     }
 })
 
@@ -44,8 +44,8 @@ SellerRouter.patch('/seller/me', Auth, async(req, res) => {
 SellerRouter.delete('/seller/me', Auth, async(req, res) => {
     try {
         const seller = await Seller.deleteOne({ _id: req.seller._id })
-        console.log(seller)
-        res.status(400).send({ message: "seller deleted", seller })
+        if (!seller) return res.send({ message: "unable to delete" })
+        res.status(200).send({ message: "seller deleted", seller })
     } catch (e) {
         res.status(500).send({ message: "unable to delete" })
     }
@@ -55,7 +55,6 @@ SellerRouter.post('/seller/login', async(req, res) => {
     try {
         const seller = await Seller.findByCredentials(req.body.email, req.body.password)
         const token = seller.getAuthtoken()
-        console.log(token)
         res.status(200).send({ seller, token })
     } catch (e) {
         res.status(500).send({ message: "unable to login seller" })
