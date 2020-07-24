@@ -2,6 +2,7 @@ const express = require('express')
 const SellerRoute = require('./routes/seller')
 const BuyerRoute = require('./routes/seller')
 require('./db/connection')
+
 const app = express()
 
 app.use(express.json())
