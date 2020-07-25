@@ -31,11 +31,11 @@ const SellerSchema = mongoose.Schema({
     }]
 })
 
-/*
-TODO: Complete connection of seller with prodict
 SellerSchema.virtual('product', {
-    ref: 
-})*/
+    ref: 'product',
+    localField: '_id',
+    foreignField: 'owner'
+})
 
 SellerSchema.statics.findByCredentials = async function(email, password) {
     const seller = await Seller.findOne({ email })
