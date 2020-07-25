@@ -20,15 +20,13 @@ ProductSchema = mongoose.Schema({
     price: {
         type: Number,
         required: true
-    }
-})
-
-/*,
+    },
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
         ref: 'seller'
-    } */
+    }
+})
 
 Product = mongoose.model('product', ProductSchema)
 
