@@ -37,7 +37,7 @@ SellerRouter.patch('/seller/me', Auth, async(req, res) => {
         if (!seller) return res.send({ message: "could not update" })
         res.status(200).send(seller)
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send()
     }
 })
 
@@ -73,36 +73,50 @@ SellerRouter.post('/seller/logout', Auth, async(req, res) => {
 
 SellerRouter.post('/seller/product/add', Auth, async(req, res) => {
     try {
-        //#TODO only saves the product details right now and not the seller
-        //Add owner in product schema
-        const product = new Product(req.body)
-        product.save()
-        res.status(200).send({ message: "product added" }, product)
+        const product = new Product({...req.body,
+            owner: req.seller._id
+        })
+        await product.save()
+        res.status(200).send({ message: "product added", product })
     } catch (e) {
         res.status(500).send({ message: "could not add product" })
     }
 })
 
-SellerRouter.post('/seller/product/edit/:id', Auth, async(req, res) => {
+SellerRouter.patch('/seller/product/:id', Auth, async(req, res) => {
+    const updates = Object.keys(req.body)
+    const validkeys = ['item_name', 'description', 'category', 'price']
+    const validrequest = updates.every((update) => validkeys.includes(update))
+    if (!validrequest) return res.status(400).send({ error: "bad request" })
     try {
-        const product = await Product.findById(req.params.id)
-        if (!product) return res.send({ message: "not found" })
-        res.send({ product })
+        const product = await Product.findOne({ _id: req.params.id, owner: req.seller._id })
+        updates.forEach(update => product[update] = req.body[update])
+        await product.save()
+        if (!product) return res.status(404).send({ error: "not found" })
+        res.status(200).send({ product })
     } catch (e) {
         res.send({ message: "not found" })
     }
 })
 
-SellerRouter.post('/seller/product/delete/:id', Auth, async(req, res) => {
+SellerRouter.delete('/seller/product/:id', Auth, async(req, res) => {
     try {
-        const product = Product.deleteOne({ _id: req.params.id })
-        if (!product) return res.status(404)
+        const product = await Product.deleteOne({ owner: req.seller._id, _id: req.params.id })
+        console.log(product)
+        if (!product) return res.status(404).send({ message: "unable to delete" })
+        return res.status(200).send({ message: "product deleted", product })
+        console.log(product)
     } catch (e) {
-
+        res.status(500)
     }
 })
 
 SellerRouter.get('/seller/products', Auth, async(req, res) => {
-    //need to add product virtial on seller for this method to be done
+    try {
+        const products = await Product.find({ owner: req.seller._id })
+        res.status(200).send({ products })
+    } catch (err) {
+        res.status(500).send({ message: "error" })
+    }
 })
 module.exports = SellerRouter
