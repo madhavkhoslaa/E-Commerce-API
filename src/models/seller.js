@@ -42,7 +42,7 @@ SellerSchema.statics.findByCredentials = async function(email, password) {
     if (!seller) throw new Error('Unable to log in')
     const isMatch = await bcrypt.compare(password, seller.password)
     if (!isMatch) throw new Error('Unable to log in')
-    return user
+    return seller
 }
 SellerSchema.methods.toJSON = function() {
     const seller = this

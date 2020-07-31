@@ -54,7 +54,7 @@ SellerRouter.delete('/seller/me', Auth, async(req, res) => {
 SellerRouter.post('/seller/login', async(req, res) => {
     try {
         const seller = await Seller.findByCredentials(req.body.email, req.body.password)
-        const token = seller.getAuthtoken()
+        const token = await seller.getAuthtoken()
         res.status(200).send({ seller, token })
     } catch (e) {
         res.status(500).send({ message: "unable to login seller" })
@@ -96,7 +96,9 @@ SellerRouter.post('/seller/product/edit/:id', Auth, async(req, res) => {
 SellerRouter.post('/seller/product/delete/:id', Auth, async(req, res) => {
     try {
         const product = Product.deleteOne({ _id: req.params.id })
-        if (!product)
+        if (!product) return res.status(404)
+    } catch (e) {
+
     }
 })
 
