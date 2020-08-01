@@ -55,7 +55,7 @@ BuyerSchema.methods.getAuthToken = async function() {
     try {
         await buyer.save()
     } catch (e) {
-
+        throw new Error('unable to generate auth token')
     }
     return token
 }
