@@ -43,11 +43,11 @@ BuyerRouter.patch('/buyer/me', Auth, async(req, res) => {
 
 BuyerRouter.delete('/buyer/me', Auth, async(req, res) => {
     try {
-        const buyer = await Buyer.deleteOne({ _id: req.seller._id })
+        const buyer = await Buyer.deleteOne({ _id: req.buyer._id })
         if (!buyer) return res.send({ message: "unable to delete" })
-        res.send({ message: "buyer deleted" })
+        res.status(200).send({ message: "buyer deleted", buyer })
     } catch (e) {
-        res.status(500).send({ message: "unable to delete buyer" })
+        res.status(500).send({ message: "unable to delete" })
     }
 })
 
