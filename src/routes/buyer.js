@@ -9,9 +9,9 @@ BuyerRouter.post('/buyer/register', async(req, res) => {
         const buyer = new Buyer(req.body)
         const token = await buyer.getAuthToken()
         await buyer.save()
-        res.status(200).send({ message: "Created Buyer ID", buyer, token })
+        res.status(201).send({ message: "created Buyer id", buyer, token })
     } catch (e) {
-        res.status(401).send(e)
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -21,7 +21,7 @@ BuyerRouter.get('/buyer/me', Auth, async(req, res) => {
         if (!buyer) return res.status(200).send({ message: "buyer not found" })
         res.send({ buyer })
     } catch (e) {
-        res.send(e)
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -35,9 +35,9 @@ BuyerRouter.patch('/buyer/me', Auth, async(req, res) => {
         to_update.forEach(update => buyer[update] = req.body[update])
         await buyer.save()
         if (!buyer) return res.send({ message: "could not update" })
-        res.status(200).send({ buyer })
+        res.status(201).send({ buyer })
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -47,7 +47,7 @@ BuyerRouter.delete('/buyer/me', Auth, async(req, res) => {
         if (!buyer) return res.send({ message: "unable to delete" })
         res.status(200).send({ message: "buyer deleted", buyer })
     } catch (e) {
-        res.status(500).send({ message: "unable to delete" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -57,7 +57,7 @@ BuyerRouter.post('/buyer/logout', Auth, async(req, res) => {
         await req.buyer.save()
         res.status(200).send({ message: "buyer logged out" })
     } catch (e) {
-        res.status(500).send("internal server error")
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -68,7 +68,7 @@ BuyerRouter.post('/buyer/login', async(req, res) => {
         res.status(200).send({ buyer, token })
     } catch (e) {
         console.log(e)
-        res.status(500).send({ message: "unable to login buyer" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
