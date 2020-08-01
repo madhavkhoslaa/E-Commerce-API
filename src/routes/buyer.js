@@ -4,15 +4,16 @@ const Auth = require('../middleware/Buyerauth')
 
 const BuyerRouter = express.Router()
 
-BuyerRouter.post('/buyer/register', async(req, res => {
+BuyerRouter.post('/buyer/register', async(req, res) => {
     try {
         const buyer = new Buyer(req.body)
+        const token = await buyer.getAuthToken()
         await buyer.save()
-        res.send({ message: "buyer created", buyer })
+        res.status(200).send({ message: "Created Buyer ID", buyer, token })
     } catch (e) {
-        res.status(500).send({ message: "could not create buyer profile" })
+        res.status(401).send(e)
     }
-}))
+})
 
 BuyerRouter.get('/buyer/me', Auth, async(req, res) => {
     try {
