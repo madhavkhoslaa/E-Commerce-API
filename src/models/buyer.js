@@ -22,13 +22,13 @@ BuyerSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    Address: {
+    address: {
         type: String,
         required: true,
         trim: true
     },
     tokens: [{
-        tokens: {
+        token: {
             type: String,
             required: true
         }
@@ -37,26 +37,27 @@ BuyerSchema = mongoose.Schema({
 
 BuyerSchema.pre('save', async function(next) {
     const buyer = this
-    if (buyer.isModified('password')) user.password = bcrypt.hashSync(buyer.password, 8)
+    if (buyer.isModified('password')) buyer.password = bcrypt.hashSync(buyer.password, 8)
     next()
 })
 
 BuyerSchema.methods.toJSON = function() {
     const buyer = this
-    const buyer = buyer.toObject()
-    delete buyer.password
-    delete buyer.tokens
-    return buyer
+    const buyer_ = buyer.toObject()
+    delete buyer_.password
+    delete buyer_.tokens
+    return buyer_
 }
-BuyerSchema.methods.getAuthTokens = async function() {
+BuyerSchema.methods.getAuthToken = async function() {
     const buyer = this
-    const token = jwt.sign({ _id: buyer._id.toString() }, 'password')
-    buyer.token = buyer.token.concat({ token })
+    const token = jwt.sign({ _id: buyer._id.toString() }, "buyer_password")
+    buyer.tokens = buyer.tokens.concat({ token })
     try {
         await buyer.save()
     } catch (e) {
-        throw new Error('Cannot Create Token')
+
     }
+    return token
 }
 BuyerSchema.statics.FindByCredentials = async function(email, password) {
     buyer = await Buyer.findOne({ email, passpwrd })
