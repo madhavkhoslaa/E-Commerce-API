@@ -63,10 +63,11 @@ BuyerRouter.post('/buyer/logout', Auth, async(req, res) => {
 
 BuyerRouter.post('/buyer/login', async(req, res) => {
     try {
-        const buyer = await Buyer.findByCredentials(req.body.email, req.body.password)
-        const token = buyer.getAuthtoken()
+        const buyer = await Buyer.FindByCredentials(req.body.email, req.body.password)
+        const token = await buyer.getAuthToken()
         res.status(200).send({ buyer, token })
     } catch (e) {
+        console.log(e)
         res.status(500).send({ message: "unable to login buyer" })
     }
 })
