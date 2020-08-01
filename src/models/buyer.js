@@ -60,9 +60,9 @@ BuyerSchema.methods.getAuthToken = async function() {
     return token
 }
 BuyerSchema.statics.FindByCredentials = async function(email, password) {
-    buyer = await Buyer.findOne({ email, passpwrd })
+    buyer = await Buyer.findOne({ email })
     if (!buyer) throw new Error('unable to login')
-    isMatch = await bcrypt.compare(buyer.password, password)
+    isMatch = await bcrypt.compare(password, buyer.password)
     if (!isMatch) throw new Error('unable to login')
     return buyer
 }
