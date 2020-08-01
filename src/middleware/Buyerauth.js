@@ -4,10 +4,10 @@ const Buyer = require('../models/buyer')
 
 const BuyerAuth = async(req, res, next) => {
     try {
-        const Authtoken = req.headers("Authorization").replace("bearer", '').trim()
+        const Authtoken = req.header("Authorization").replace("Bearer", "").trim()
         const decoded = jwt.verify(Authtoken, "buyer_password")
-        const buyer = Buyer.findOne({ _id: decoded._id, 'tokens.token': Authtoken })
-        req.buyer = buyer[0]
+        const buyer = await Buyer.findOne({ _id: decoded._id, 'tokens.token': Authtoken })
+        req.buyer = buyer
         req.token = Authtoken
         next()
     } catch (error) {
