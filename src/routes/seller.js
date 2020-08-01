@@ -9,19 +9,19 @@ SellerRouter.post('/seller/register', async(req, res) => {
         const seller = new Seller(req.body)
         const token = await seller.getAuthtoken()
         await seller.save()
-        res.status(200).send({ message: "Created Seller ID", seller, token })
+        res.status(201).send({ message: "created seller id", seller, token })
     } catch (e) {
-        res.status(401).send(e)
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
 SellerRouter.get('/seller/me', Auth, async(req, res) => {
     try {
         const seller = req.seller
-        if (!seller) return res.status(400).send("not found")
-        res.send(seller)
+        if (!seller) return res.status(404).send({ message: "not found" })
+        res.status(200).send(seller)
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -29,7 +29,7 @@ SellerRouter.patch('/seller/me', Auth, async(req, res) => {
     const to_update = Object.keys(req.body)
     const valid_keys = ['name', 'email', 'password']
     const is_valid = to_update.every((update) => valid_keys.includes(update))
-    if (!is_valid) res.status(400).send({ message: "cannot update" })
+    if (!is_valid) res.status(400).send({ message: "cannot update bad request" })
     try {
         const seller = req.seller
         to_update.forEach(update => seller[update] = req.body[update])
@@ -37,7 +37,7 @@ SellerRouter.patch('/seller/me', Auth, async(req, res) => {
         if (!seller) return res.send({ message: "could not update" })
         res.status(200).send(seller)
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -47,7 +47,7 @@ SellerRouter.delete('/seller/me', Auth, async(req, res) => {
         if (!seller) return res.send({ message: "unable to delete" })
         res.status(200).send({ message: "seller deleted", seller })
     } catch (e) {
-        res.status(500).send({ message: "unable to delete" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -57,7 +57,7 @@ SellerRouter.post('/seller/login', async(req, res) => {
         const token = await seller.getAuthtoken()
         res.status(200).send({ seller, token })
     } catch (e) {
-        res.status(500).send({ message: "unable to login seller" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -67,7 +67,7 @@ SellerRouter.post('/seller/logout', Auth, async(req, res) => {
         await req.seller.save()
         res.status(200).send({ message: "seller logged out" })
     } catch (e) {
-        res.status(500).send("internal server error")
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -77,9 +77,9 @@ SellerRouter.post('/seller/product/add', Auth, async(req, res) => {
             owner: req.seller._id
         })
         await product.save()
-        res.status(200).send({ message: "product added", product })
+        res.status(201).send({ message: "product added", product })
     } catch (e) {
-        res.status(500).send({ message: "could not add product" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -95,19 +95,18 @@ SellerRouter.patch('/seller/product/:id', Auth, async(req, res) => {
         if (!product) return res.status(404).send({ error: "not found" })
         res.status(200).send({ product })
     } catch (e) {
-        res.send({ message: "not found" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
 SellerRouter.delete('/seller/product/:id', Auth, async(req, res) => {
     try {
-        const product = await Product.deleteOne({ owner: req.seller._id, _id: req.params.id })
-        console.log(product)
-        if (!product) return res.status(404).send({ message: "unable to delete" })
-        return res.status(200).send({ message: "product deleted", product })
+        const product = await Product.deleteOne({ _id: req.params.id, owner: req.seller._id })
+        if (!product) return res.status(404).send({ message: "not found" })
+        res.status(200).send({ message: "product deleted", product })
         console.log(product)
     } catch (e) {
-        res.status(500)
+        res.status(500).send({ message: "internal server error" })
     }
 })
 
@@ -116,7 +115,7 @@ SellerRouter.get('/seller/products', Auth, async(req, res) => {
         const products = await Product.find({ owner: req.seller._id })
         res.status(200).send({ products })
     } catch (err) {
-        res.status(500).send({ message: "error" })
+        res.status(500).send({ message: "internal server error" })
     }
 })
 module.exports = SellerRouter
