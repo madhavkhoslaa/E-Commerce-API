@@ -39,9 +39,9 @@ SellerSchema.virtual('product', {
 
 SellerSchema.statics.findByCredentials = async function(email, password) {
     const seller = await Seller.findOne({ email })
-    if (!seller) throw new Error('Unable to log in')
+    if (!seller) throw new Error('unable to log in')
     const isMatch = await bcrypt.compare(password, seller.password)
-    if (!isMatch) throw new Error('Unable to log in')
+    if (!isMatch) throw new Error('unable to log in')
     return seller
 }
 SellerSchema.methods.toJSON = function() {
@@ -59,7 +59,7 @@ SellerSchema.methods.getAuthtoken = async function() {
     try {
         await seller.save()
     } catch (e) {
-        console.log(e)
+        throw new Error('unable to generate auth token')
     }
     return token
 }
