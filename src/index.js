@@ -1,6 +1,7 @@
 const express = require('express')
 const SellerRoute = require('./routes/seller')
-const BuyerRoute = require('./routes/seller')
+const BuyerRoute = require('./routes/buyer')
+
 require('./db/connection')
 
 const app = express()
