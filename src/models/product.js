@@ -1,5 +1,3 @@
-const express = require('express')
-const validator = require('validator')
 const mongoose = require('mongoose')
 
 ProductSchema = mongoose.Schema({
@@ -26,6 +24,8 @@ ProductSchema = mongoose.Schema({
         required: true,
         ref: 'seller'
     }
+}, {
+    timestamps: true
 })
 
 Product = mongoose.model('product', ProductSchema)
