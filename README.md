@@ -58,13 +58,13 @@ There are endpoints for Sellers, Buyers and their interaction with Products.
 
 ### Product Related:
 
-|           Endpoint           | HTTP Method |                            Usage                             |                           Returns                            | Requires Auth | Development Status |
-| :--------------------------: | :---------: | :----------------------------------------------------------: | :----------------------------------------------------------: | ------------- | ------------------ |
-|  `/seller/product/edit/:id`  |   `POST`    | Requires a JSON of prodict details that are needed to be changed and JWT token in the header |  Returns the new data of the product that has been updated.  | Yes           | Works              |
-| `/seller/product/delete/:id` |   `POST`    | Requires the ID(mongo db id) of the product that is needed to be deleted and JWT token | Returns the JSON product whose ID was given and deleted it from the database. | Yes           | Works              |
-|      `/seller/products`      |    `GET`    |               Required JWT token in the header               |     Returns the products that are posted by the seller.      | Yes           | Works              |
-|    `/seller/product/add`     |   `POST`    | Requires a JSON of prodict details and JWT token in the header | Returns the JSON of the product that has been sent and stores in the database. | Yes           | Works              |
-|       `/buyer/buy/:id`       |   `POST`    | Call the API with required bearer JWT token in header and the ID(mongo db _id) of the product. | Removes the seller as owner from the product database and sets owner to the buyer after the payment is completed. | Yes           | In Progress        |
+|           Endpoint           | HTTP Method |                            Usage                             |                           Returns                            | Requires Auth | Development Status                        |
+| :--------------------------: | :---------: | :----------------------------------------------------------: | :----------------------------------------------------------: | ------------- | ----------------------------------------- |
+|  `/seller/product/edit/:id`  |   `POST`    | Requires a JSON of prodict details that are needed to be changed and JWT token in the header |  Returns the new data of the product that has been updated.  | Yes           | Works                                     |
+| `/seller/product/delete/:id` |   `POST`    | Requires the ID(mongo db id) of the product that is needed to be deleted and JWT token | Returns the JSON product whose ID was given and deleted it from the database. | Yes           | Works                                     |
+|      `/seller/products`      |    `GET`    |               Required JWT token in the header               |     Returns the products that are posted by the seller.      | Yes           | Works                                     |
+|    `/seller/product/add`     |   `POST`    | Requires a JSON of prodict details and JWT token in the header | Returns the JSON of the product that has been sent and stores in the database. | Yes           | Works                                     |
+|       `/buyer/buy/:id`       |   `POST`    | Call the API with required bearer JWT token in header and the ID(mongo db _id) of the product. | Removes the seller as owner from the product database and sets owner to the buyer after the payment is completed. | Yes           | Works but Stripe API payments to be added |
 
 
 
@@ -105,6 +105,15 @@ There are endpoints for Sellers, Buyers and their interaction with Products.
 | password | `String`                         |
 | Address  | `String`                         |
 | tokens   | `Array` of strings               |
+
+### Transactions:
+
+| Name       | Type                             |
+| ---------- | -------------------------------- |
+| _id        | `mongoose.Schema.Types.ObjectId` |
+| seller_id  | `mongoose.Schema.Types.ObjectId` |
+| Product_id | `mongoose.Schema.Types.ObjectId` |
+| buyer_id   | `mongoose.Schema.Types.ObjectId` |
 
 
 
