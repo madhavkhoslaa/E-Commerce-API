@@ -29,6 +29,9 @@ const SellerSchema = mongoose.Schema({
             required: true
         }
     }]
+},
+ {
+    timestamps: true
 })
 
 SellerSchema.virtual('product', {
@@ -74,7 +77,7 @@ SellerSchema.pre('save', async function(next) {
 SellerSchema.post('save', function(next) {
     const seller = this
     seller.populate('product').execPopulate()
-    seller.tasks.remove()
+    seller.product.remove()
     next()
 })*/
 
