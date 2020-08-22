@@ -2,17 +2,17 @@ const mongoose = require('mongoose')
 
 TransactionSchema = mongoose.Schema({
     seller_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         trim: true
     },
     buyer_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         trim: true
     },
     product_id: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true,
         trim: true
     }
