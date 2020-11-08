@@ -3,7 +3,7 @@ const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-const SellerSchema = mongoose.Schema({
+const SellerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,

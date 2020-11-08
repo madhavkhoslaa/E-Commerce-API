@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 
-BuyerSchema = mongoose.Schema({
+BuyerSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,

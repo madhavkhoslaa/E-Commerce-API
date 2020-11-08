@@ -1,4 +1,3 @@
-const express = require('express')
 const jwt = require('jsonwebtoken')
 const Buyer = require('../models/buyer')
 
