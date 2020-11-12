@@ -1,6 +1,10 @@
 # E-Commerce-API
 
 ---
+# Usage
+* clone
+* change .env file with port and mongourl for your database
+* deploy
 
 This API has been made for a small scale e commerce businesses.
 
