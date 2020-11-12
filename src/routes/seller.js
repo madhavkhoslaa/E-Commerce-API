@@ -44,10 +44,12 @@ SellerRouter.patch('/seller/me', Auth, async(req, res) => {
 SellerRouter.delete('/seller/me', Auth, async(req, res) => {
     try {
         const seller = await Seller.deleteOne({ _id: req.seller._id })
+        const products = await Product.deleteMany({owner: req.seller._id})
         if (!seller) return res.send({ message: "unable to delete" })
         res.status(200).send({ message: "seller deleted", seller })
     } catch (e) {
         res.status(500).send({ message: "internal server error" })
+        console.log(e)
     }
 })
 
