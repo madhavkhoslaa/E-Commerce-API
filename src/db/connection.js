@@ -1,3 +1,4 @@
 const mongoose = require('mongoose')
+require('dotenv').config()
 
-mongoose.connect('mongodb://127.0.0.1:27017/E-Commerce', { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
+mongoose.connect(process.env.MONGOURL, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true })
