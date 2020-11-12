@@ -11,7 +11,7 @@ SellerRouter.post('/seller/register', async(req, res) => {
         await seller.save()
         res.status(201).send({ message: "created seller id", seller, token })
     } catch (e) {
-        res.status(500).send({ message: "internal server error" })
+        res.status(500).send({ message: "Incorrect email ID or ID with emails exists" })
     }
 })
 
@@ -57,7 +57,8 @@ SellerRouter.post('/seller/login', async(req, res) => {
         const token = await seller.getAuthtoken()
         res.status(200).send({ seller, token })
     } catch (e) {
-        res.status(500).send({ message: "internal server error" })
+        res.status(500).send({ message: e })
+        console.log(e)
     }
 })
 
@@ -76,6 +77,7 @@ SellerRouter.post('/seller/product/add', Auth, async(req, res) => {
         const product = new Product({...req.body,
             owner: req.seller._id
         })
+        product.clicks = 0
         await product.save()
         res.status(201).send({ message: "product added", product })
     } catch (e) {
@@ -116,6 +118,18 @@ SellerRouter.get('/seller/products', Auth, async(req, res) => {
         res.status(200).send({ products })
     } catch (err) {
         res.status(500).send({ message: "internal server error" })
+    }
+})
+
+SellerRouter.get('/seller/product/:id', async(req, res)=>{
+    try{
+        const product = await Product.findOne({_id: req.params.id})
+        product.clicks += 1 
+        await product.save()
+        if(!product) return res.status(400).send({message: "bad request"})
+        res.status(200).send({product})
+    } catch(err){
+        res.status(500).send({message: "internal server error"})
     }
 })
 module.exports = SellerRouter
