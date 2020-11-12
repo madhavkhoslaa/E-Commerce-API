@@ -3,6 +3,7 @@
 ---
 # Usage
 * clone
+* install packages
 * change .env file with port and mongourl for your database
 * deploy
 
