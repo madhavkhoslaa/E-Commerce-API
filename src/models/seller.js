@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 const SellerSchema = mongoose.Schema({
     name: {
@@ -57,7 +58,7 @@ SellerSchema.methods.toJSON = function() {
 
 SellerSchema.methods.getAuthtoken = async function() {
     const seller = this
-    const token = jwt.sign({ _id: seller._id.toString() }, "seller_password")
+    const token = jwt.sign({ _id: seller._id.toString() }, process.env.seller_password)
     seller.tokens = seller.tokens.concat({ token })
     try {
         await seller.save()

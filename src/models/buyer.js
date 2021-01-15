@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const validator = require('validator')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+require('dotenv').config()
 
 
 BuyerSchema = mongoose.Schema({
@@ -54,7 +55,7 @@ BuyerSchema.methods.getAuthToken = async function () {
     const buyer = this
     const token = jwt.sign({
         _id: buyer._id.toString()
-    }, "buyer_password")
+    }, process.env.buyer_password)
     buyer.tokens = buyer.tokens.concat({
         token
     })
