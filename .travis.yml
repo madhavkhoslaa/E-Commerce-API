@@ -1,7 +1,10 @@
 arch: 
   - arm64
-before_script: 
-  - "npm i"
 language: node_js
 node_js: 
   - 14.16
+before_script: 
+  - "npm i"
+install: []
+build: 
+  - npm start
