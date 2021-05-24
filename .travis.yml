@@ -4,4 +4,4 @@ before_script:
   - "npm i"
 language: node_js
 node_js: 
-  - 7
+  - 14.16
