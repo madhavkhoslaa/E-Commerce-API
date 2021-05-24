@@ -24,3 +24,5 @@ app.post('*', async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Server running on ${process.env.PORT}`)
 })
+
+    console.log("pog")
