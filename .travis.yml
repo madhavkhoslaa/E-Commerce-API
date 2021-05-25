@@ -6,8 +6,17 @@ node_js:
 before_script: 
   - "npm install"
 script: "true"
+after_script: []
+before_install: []
 install: []
+after_install: []
 build: 
   - npm start
 after_script: 
   - "echo done"
+after_success: []
+after_failure: []
+before_deploy: []
+deploy: []
+after_deploy: []
+after_script: []
