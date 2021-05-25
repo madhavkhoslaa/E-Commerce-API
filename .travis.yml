@@ -5,7 +5,7 @@ node_js:
   - 14.16
 before_script: 
   - "npm install"
-script: 'true'
+script: []
 install: []
 build: 
   - npm start
