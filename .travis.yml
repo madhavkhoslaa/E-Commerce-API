@@ -4,8 +4,10 @@ language: node_js
 node_js: 
   - 14.16
 before_script: 
-  - "npm i"
+  - "npm install"
 script: 'true'
 install: []
 build: 
   - npm start
+after_script: 
+  - "echo done"
