@@ -17,6 +17,14 @@ after_script:
 after_success: []
 after_failure: []
 before_deploy: []
-deploy: []
-after_deploy: []
+deploy:
+  - provider: s3
+  - provider: codedeploy
+    access_key_id: <encrypted access_key_id>
+    secret_access_key: <encrypted secret_access_key>
+    bucket: <bucket>
+    key: <bucket_key>
+    application: <app>
+    deployment_group: <deployment_group>
+    edge: true # opt in to dpl v2after_deploy: []
 after_script: []
