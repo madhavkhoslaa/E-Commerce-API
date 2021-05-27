@@ -11,6 +11,13 @@ app.use(SellerRoute);
 app.use(BuyerRoute);
 const PORT = process.env.PORT || 3003;
 
+app.get("/", (req, res) => {
+  res.send({
+    message:
+      "Welcome please refer to the API Documentation at https://github.com/madhavkhoslaa/E-Commerce-API/blob/master/README.md",
+  });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on ${process.env.PORT}`);
 });
