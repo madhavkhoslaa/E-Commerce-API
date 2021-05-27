@@ -15,5 +15,5 @@ export NVM_DIR="$HOME/.nvm"
 npm install
 echo "Requirments installed"
 #start our node app in the background
-echo "Running Application..."
+echo "Running Application.."
 node src/index.js > app.out.log 2> app.err.log < /dev/null & 
