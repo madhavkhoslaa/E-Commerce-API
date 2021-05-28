@@ -20,9 +20,8 @@ before_deploy: []
 deploy:
   - provider: s3
   - provider: codedeploy
-    access_key_id: $access_key_id
-    secret_access_key: $secret_access_key
+    access_key_id: "AKIA4OMFWH52MDLZ7XSW"
+    secret_access_key: "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"
     bucket: "S3 Bucket"
     key: latest/MyApp.zip
     application: BatMan
-    deployment_group: BatManGroup
