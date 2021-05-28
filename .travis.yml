@@ -24,5 +24,5 @@ deploy:
     secret_access_key: $AWSSecretKey
     bucket: "S3 Bucket"
     key: latest/MyApp.zip
-    application: SuperMan
-    deployment_group: SuperManGroup
+    application: BatMan
+    deployment_group: BatManGroup
