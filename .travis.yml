@@ -17,5 +17,12 @@ after_script:
 after_success: []
 after_failure: []
 before_deploy: []
-deploy: []
-after_script: []
+deploy:
+  - provider: s3
+  - provider: codedeploy
+    access_key_id: $AWSAccessKeyId
+    secret_access_key: $AWSSecretKey
+    bucket: "S3 Bucket"
+    key: latest/MyApp.zip
+    application: SuperMan
+    deployment_group: SuperManGroup
