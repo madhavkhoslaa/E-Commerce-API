@@ -15,7 +15,7 @@ app.get("/", (req, res) => {
   res.send({
     message:
       "Welcome please refer to the API Documentation at https://github.com/madhavkhoslaa/E-Commerce-API/blob/master/README.md",
-    test: "CI/CD Working!"
+    test: "CI/CD Working, test message!"
   });
 });
 
