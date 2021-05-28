@@ -20,8 +20,6 @@ before_deploy: []
 deploy:
   - provider: codedeploy
     revision_type: github
-    access_key_id: "AKIA4OMFWH52MDLZ7XSW"
-    secret_access_key: "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"
     application: "BatMan"
     deployment_group: "BatManGroup"
     region: "us-west-1c"
