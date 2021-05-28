@@ -21,6 +21,3 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server running on ${process.env.PORT}`);
 });
-
-// Purposfully added bad code to check travis. 
-ap . sdls da
