@@ -17,9 +17,4 @@ after_script:
 after_success: []
 after_failure: []
 before_deploy: []
-deploy:
-  - provider: codedeploy
-    revision_type: github
-    application: "BatMan"
-    deployment_group: "BatManGroup"
-    region: "us-west-1c"
+deploy: []
