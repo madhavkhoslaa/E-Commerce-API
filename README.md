@@ -1,5 +1,5 @@
 # E-Commerce-API
-
+[![Build Status](https://travis-ci.com/madhavkhoslaa/E-Commerce-API.svg?branch=master)](https://travis-ci.com/madhavkhoslaa/E-Commerce-API)
 ---
 # Usage
 * clone
