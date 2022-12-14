@@ -1,0 +1,29 @@
+version: "3.6"
+services:
+    application:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      restart: always
+      ports:
+        - $PORT:$PORT
+      image: backend-api
+      stdin_open: true
+
+
+
+    mongodb:
+      image: mongo
+      restart: always
+      environment:
+        - MONGO_INITDB_ROOT_USERNAME=${MONGODB_USERNAME}
+        - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_PASSWORD}
+      ports:
+        - $MONGODB_PORT:27107
+      volumes:
+        - db:/mongodb/datastore
+      stdin_open: true
+      tty: true
+
+volumes:
+  db:
