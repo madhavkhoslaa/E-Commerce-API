@@ -117,7 +117,9 @@ SellerRouter.delete('/seller/product/:id', Auth, async (req, res) => {
 
 SellerRouter.get('/seller/products/:skip/:limit', Auth, async (req, res) => {
     try {
-        const { skip, limit } = req.params
+        let { skip, limit } = req.params
+        skip = Number(skip)
+        limit = Number(limit)
         const products = await Product.find({ owner: req.seller._id })
             .sort({ item_name: 'desc' })
             .skip(skip)
@@ -130,7 +132,9 @@ SellerRouter.get('/seller/products/:skip/:limit', Auth, async (req, res) => {
 
 SellerRouter.post('/seller/products/search', Auth, async (req, res) => {
     try {
-        const { searchText, skip, limit } = req.body.text
+        let { searchText, skip, limit } = req.body
+        skip = Number(skip)
+        limit = Number(limit)
         var reg = new RegExp(searchText, "g");
         const products = await Product.find({
             owner: req.seller._id, $or: [
