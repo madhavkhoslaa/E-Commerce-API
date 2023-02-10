@@ -115,9 +115,13 @@ SellerRouter.delete('/seller/product/:id', Auth, async (req, res) => {
     }
 })
 
-SellerRouter.get('/seller/products', Auth, async (req, res) => {
+SellerRouter.get('/seller/products/:skip/:limit', Auth, async (req, res) => {
     try {
+        const { skip, limit } = req.params
         const products = await Product.find({ owner: req.seller._id })
+            .sort({ item_name: 'desc' })
+            .skip(skip)
+            .limit(limit)
         res.status(200).send({ products })
     } catch (err) {
         res.status(500).send({ message: "internal server error" })
@@ -126,7 +130,7 @@ SellerRouter.get('/seller/products', Auth, async (req, res) => {
 
 SellerRouter.post('/seller/products/search', Auth, async (req, res) => {
     try {
-        const searchText = req.body.text
+        const { searchText, skip, limit } = req.body.text
         var reg = new RegExp(searchText, "g");
         const products = await Product.find({
             owner: req.seller._id, $or: [
@@ -135,6 +139,9 @@ SellerRouter.post('/seller/products/search', Auth, async (req, res) => {
                 { 'category': reg }
             ]
         })
+            .sort({ item_name: 'desc' })
+            .skip(skip)
+            .limit(limit)
         res.status(200).send({ products })
     } catch (err) {
         res.status(500).send({ message: "internal server error" })
